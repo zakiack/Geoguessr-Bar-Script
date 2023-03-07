@@ -5,7 +5,8 @@
 // @author       zakiack
 // @match        *://*.geoguessr.com/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
-// @grant        none
+// @downloadURL    https://raw.githubusercontent.com/zakiack/Geoguessr-Bar-Script/main/Score%20Bar.js
+// @updateURL    https://raw.githubusercontent.com/zakiack/Geoguessr-Bar-Script/main/Score%20Bar.js
 // ==/UserScript==
 var ranRes = false;
 var ranEnd = false;
