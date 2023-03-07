@@ -7,6 +7,8 @@
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 // @downloadURL    https://raw.githubusercontent.com/zakiack/Geoguessr-Bar-Script/main/Score%20Bar.js
 // @updateURL    https://raw.githubusercontent.com/zakiack/Geoguessr-Bar-Script/main/Score%20Bar.js
+// @license       MIT
+// @namespace https://greasyfork.org/users/1037819
 // ==/UserScript==
 var ranRes = false;
 var ranEnd = false;
