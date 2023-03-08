@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Geoguessr Score Bar
-// @version      1.0
-// @description  Re-adds the score bar to Geoguessr
+// @version      1.1
+// @description  Re-adds the score bar and moveable end map to Geoguessr
 // @author       zakiack
-// @match        *://*.geoguessr.com/*
+// @match        *://*.geoguessr.com/game/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 // @downloadURL    https://raw.githubusercontent.com/zakiack/Geoguessr-Bar-Script/main/Score%20Bar.js
 // @updateURL    https://raw.githubusercontent.com/zakiack/Geoguessr-Bar-Script/main/Score%20Bar.js
@@ -39,7 +39,6 @@ function addBarDuring(resultElement){
         const barFill = e.firstElementChild;
         const scorePara = barFill.firstElementChild;
         barFill.style.width = barPercent+"%";
-        console.log(barPercent);
         scorePara.innerHTML = score;
 
     } else if(!e) {
@@ -48,34 +47,40 @@ function addBarDuring(resultElement){
     }
 
 }
-function addBarEnd(resultElement){
-    const score = parseFloat(document.querySelector('div[class^="result-overlay_overlayTotalScore"]').firstElementChild.firstElementChild.firstElementChild.firstElementChild.innerHTML.replace(/,/g, ''));
+function addBarEnd(){
+    const score = parseFloat(document.querySelectorAll('div[class^="status_value"]')[2].innerHTML.replace(/,/g, ''));
+    const resultOverlays = document.querySelectorAll('div[class^="result-overlay_overlay"]');
+    if (resultOverlays){
+        for (let i=0;i<resultOverlays.length;i++){
+            resultOverlays[i].remove();
+        }
+    }
+    const bottomBar = document.querySelector('div[class^="result-layout_contentNew"]');
     const barPercent = (score/25000)*100;
     let e = document.getElementById("the bar end");
-    if (e && score){
-        const barFill = e.firstElementChild;
-        const scorePara = barFill.firstElementChild;
-        barFill.style.width = barPercent+"%";
-        console.log(barPercent);
-        scorePara.innerHTML = score;
-
-    } else if(!e) {
+    if(!e) {
         const bar = generateBar(score,barPercent,"the bar end");
-        resultElement.appendChild(bar);
+        let e1 = document.getElementById("the bar");
+        bottomBar.insertBefore(bar,e1);
+        e1.remove();
+        const roundDesc = document.createElement("p");
+        roundDesc.innerHTML = "You Scored "+score+" Out of 25,000 points";
+        bottomBar.insertBefore(roundDesc,bar);
     }
 }
 function checkGameEnd(){
     const gameLayout = document.querySelector('.game-layout');
+    const checkEndingElement = document.querySelector('div[class^="round-indicator_roundIndicatorContent"]');
 	const resultElement = document.querySelector('div[class^="result-layout_contentNew"]');
-	const endElement = document.querySelector('div[class^="result-overlay_overlayContent"]');
-	if(gameLayout && resultElement && ranRes == false) {
+	const endElement = document.querySelector('div[class^="result-map__map"]');
+	if(checkEndingElement && checkEndingElement.innerHTML.includes("Result") && ranEnd == false) {
+        ranRes = true;
+        ranEnd = true;
+        addBarEnd();
+	}else if(gameLayout && resultElement && ranRes == false) {
+        addBarDuring(resultElement);
         ranRes = true;
         ranEnd = false;
-        addBarDuring(resultElement);
-	}else if(gameLayout && endElement && ranEnd == false) {
-        addBarEnd(endElement);
-        ranRes = false;
-        ranEnd = true;
 	}else if(gameLayout) {
         ranRes = false;
         ranEnd = false;
