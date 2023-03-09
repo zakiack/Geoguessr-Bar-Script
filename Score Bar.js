@@ -1,14 +1,13 @@
 // ==UserScript==
-// @name         Geoguessr Score Bar
+// @name         Geoguessr Old UI Emulator
 // @version      1.1
 // @description  Re-adds the score bar and moveable end map to Geoguessr
 // @author       zakiack
-// @match        *://*.geoguessr.com/game/*
-// @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
-// @downloadURL    https://raw.githubusercontent.com/zakiack/Geoguessr-Bar-Script/main/Score%20Bar.js
+// @match        *://*.geoguessr.com/*
+// @downloadURL  https://raw.githubusercontent.com/zakiack/Geoguessr-Bar-Script/main/Score%20Bar.js
 // @updateURL    https://raw.githubusercontent.com/zakiack/Geoguessr-Bar-Script/main/Score%20Bar.js
-// @license       MIT
-// @namespace https://greasyfork.org/users/1037819
+// @license      MIT
+// @namespace    https://greasyfork.org/users/1037819
 // ==/UserScript==
 var ranRes = false;
 var ranEnd = false;
@@ -65,29 +64,33 @@ function addBarEnd(){
         e1.remove();
         const roundDesc = document.createElement("p");
         roundDesc.innerHTML = "You Scored "+score+" Out of 25,000 points";
+        roundDesc.style.fontSize = "20px";
         bottomBar.insertBefore(roundDesc,bar);
     }
 }
 function checkGameEnd(){
-    const gameLayout = document.querySelector('.game-layout');
-    const checkEndingElement = document.querySelector('div[class^="round-indicator_roundIndicatorContent"]');
-	const resultElement = document.querySelector('div[class^="result-layout_contentNew"]');
-	const endElement = document.querySelector('div[class^="result-map__map"]');
-	if(checkEndingElement && checkEndingElement.innerHTML.includes("Result") && ranEnd == false) {
-        ranRes = true;
-        ranEnd = true;
-        addBarEnd();
-	}else if(gameLayout && resultElement && ranRes == false) {
-        addBarDuring(resultElement);
-        ranRes = true;
-        ranEnd = false;
-	}else if(gameLayout) {
-        ranRes = false;
-        ranEnd = false;
-	}
+    //if (window.location.href.includes("/game/")){
+        const gameLayout = document.querySelector('.game-layout');
+        const checkEndingElement = document.querySelector('div[class^="round-indicator_roundIndicatorContent"]');
+        const resultElement = document.querySelector('div[class^="result-layout_contentNew"]');
+        const endElement = document.querySelector('div[class^="result-map__map"]');
+        if(checkEndingElement && checkEndingElement.innerHTML.includes("Result") && ranEnd == false) {
+            ranRes = true;
+            ranEnd = true;
+            addBarEnd();
+        }else if(gameLayout && resultElement && ranRes == false) {
+            addBarDuring(resultElement);
+            ranRes = true;
+            ranEnd = false;
+        }else if(gameLayout) {
+            ranRes = false;
+            ranEnd = false;
+        }
+    //}
 }
 function init(){
+    console.log("zakiack's old geoguessr ui emulator running");
     const observer = new MutationObserver(checkGameEnd);
-	observer.observe(document.querySelector('#__next'), { subtree: true, childList: true });
+    observer.observe(document.querySelector('#__next'), { subtree: true, childList: true });
 }
 init();
