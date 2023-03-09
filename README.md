@@ -1,3 +1,2 @@
 # Geoguessr-Bar-Script
-Re-Adds the Scorebar to Geoguessr
-\nDM on discord for questions @zakiack#8247
+Re-Adds the Scorebar to Geoguessr. DM on discord for questions @zakiack#8247
